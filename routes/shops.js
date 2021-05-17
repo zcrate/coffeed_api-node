@@ -20,6 +20,13 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(shop);
 });
 
+router.put("/:id", validateObjectId, async (req, res) => {
+  const shop = await Shop.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  res.send(shop);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -27,8 +34,7 @@ router.post("/", async (req, res) => {
   const menu = [];
   for (i in req.body.menu) {
     item = req.body.menu[i];
-    console.log(i);
-    console.log(item);
+
     menu.push(
       new MenuItem({
         name: item.name,
